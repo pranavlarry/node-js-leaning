@@ -14,15 +14,21 @@ const server = http.createServer((req,res)=> {
 
     if(url === '/msg' && req.method === 'POST') {
         const body=[];
+
+        //event for input stream of data
         req.on('data',(chunk)=>{
             console.log(chunk);
             body.push(chunk);
         });
+
+        //event fired when stream is completed
         req.on('end',()=>{
-            const parseBody = Buffer.concat(body).toString();
+            const parseBody = Buffer.concat(body).toString(); //Concatinating the chunks of data
             console.log(parseBody);
-        })
-        res.statusCode = 302 // redirection
+        });
+
+        // redirection
+        res.statusCode = 302 
         res.setHeader('Location','/');
 
         return res.end();
